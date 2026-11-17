@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Тренажёр · перевод RU → DE · КМ</title>
+<meta name="description" content="Тренажёр перевода с русского на немецкий: 104 предложения из уроков 2 и 3, транскрипция и озвучка.">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230f1620'/%3E%3Ctext x='32' y='44' font-family='Segoe UI,Arial' font-size='27' font-weight='700' fill='%23fff' text-anchor='middle'%3EDE%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+
+<header>
+  <div class="hd">
+    <div class="brand">Немецкий · КМ<small>перевод RU → DE · 104 предложения</small></div>
+    <div class="spacer"></div>
+    <nav class="main">
+      <a href="index.html" class="on">Тренажёр</a>
+      <a href="theory.html">Теория</a>
+    </nav>
+    <div class="pills">
+      <div class="pill">знаю <b id="cKnown">0</b></div>
+      <div class="pill">повторить <b id="cAgn">0</b></div>
+      <div class="pill">в наборе <b id="cTotal">0</b></div>
+    </div>
+  </div>
+  <div class="bar"><i id="bar"></i></div>
+</header>
+
+<div class="wrap">
+
+  <div class="modes">
+    <button data-mode="all" class="on">Все подряд</button>
+    <button data-mode="ticket">Билет · 10 случайных</button>
+    <button data-mode="hard">Только сложные</button>
+    <span class="divider"></span>
+    <button data-filter="all" class="on">оба урока</button>
+    <button data-filter="L2">урок 2</button>
+    <button data-filter="L3">урок 3</button>
+  </div>
+
+  <div id="cardWrap"></div>
+
+  <div class="hintbar">
+    <kbd>пробел</kbd> перевод &nbsp;·&nbsp; <kbd>t</kbd> транскрипция &nbsp;·&nbsp;
+    <kbd>s</kbd> прослушать &nbsp;·&nbsp; <kbd>→</kbd> дальше &nbsp;·&nbsp;
+    <kbd>←</kbd> назад &nbsp;·&nbsp; <kbd>2</kbd> знаю &nbsp;·&nbsp; <kbd>1</kbd> повторить
+    <br>Озвучка — голосом браузера (de-DE). Прогресс сохраняется локально.
+    <a href="theory.html">Как читать транскрипцию →</a>
+  </div>
+</div>
+
+<script src="assets/data.js"></script>
+<script>
+(function(){
+  "use strict";
+
+  var DATA = [], BY_KEY = {};
+  window.KM.lessons.forEach(function(l){
+    l.sections.forEach(function(s){
+      s.items.forEach(function(it){
+        it.lesson = l.tag; it.lessonKey = l.tag === "Урок 2" ? "L2" : "L3";
+        it.sec = s.k; it.secRu = s.ru; it.id = DATA.length;
+        DATA.push(it);
+      });
+    });
+  });
+
+  var S = { deck: [], i: 0, shown: false, tr: false, mode: "all", filter: "all",
+            known: load("k"), agn: load("a") };
+
+  function load(f){ try { return new Set(JSON.parse(localStorage.getItem("de-km-"+f) || "[]")); }
+                    catch(e){ return new Set(); } }
+  function save(f,set){ try { localStorage.setItem("de-km-"+f, JSON.stringify([].slice.call(set))); } catch(e){} }
+
+  var $ = function(id){ return document.getElementById(id); };
+  function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+  function shuffle(a){ a = a.slice();
+    for (var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i];a[i]=a[j];a[j]=t; }
+    return a; }
+
+  function pool(){
+    var p = DATA.filter(function(d){ return S.filter === "all" || d.lessonKey === S.filter; });
+    return p.length ? p : DATA;
+  }
+
+  function build(mode){
+    S.mode = mode; S.i = 0; S.shown = false; S.tr = false;
+    var p = pool();
+    if (mode === "ticket"){
+      var fresh = p.filter(function(d){ return !S.known.has(d.id); });
+      S.deck = shuffle(fresh.length >= 10 ? fresh : p).slice(0, 10);
+    } else if (mode === "hard"){
+      var hard = p.filter(function(d){ return S.agn.has(d.id); });
+      S.deck = hard.length ? shuffle(hard) : shuffle(p);
+    } else {
+      S.deck = p.slice();
+    }
+    render();
+  }
+
+  function speak(text){
+    if (!("speechSynthesis" in window)) return;
+    var u = new SpeechSynthesisUtterance(text.replace(/[„“«»"]/g, ""));
+    u.lang = "de-DE"; u.rate = 0.92;
+    var vs = speechSynthesis.getVoices().filter(function(v){ return /^de/i.test(v.lang); });
+    if (vs.length) u.voice = vs[0];
+    speechSynthesis.cancel(); speechSynthesis.speak(u);
+  }
+
+  function counters(){
+    $("cKnown").textContent = S.known.size;
+    $("cAgn").textContent = S.agn.size;
+    $("cTotal").textContent = S.deck.length;
+    var pct;
+    if (S.mode === "all") pct = S.deck.length ? S.i / S.deck.length : 0;
+    else pct = S.deck.length ? (S.known.size + S.agn.size) / S.deck.length : 0;
+    $("bar").style.width = Math.min(100, Math.round(pct * 100)) + "%";
+  }
+
+  function render(){
+    counters();
+    if (S.i >= S.deck.length){ finish(); return; }
+    var d = S.deck[S.i], marks = (S.known.has(d.id) ? " ✓" : "") + (S.agn.has(d.id) ? " ↻" : "");
+
+    var trBox = "";
+    if (S.tr){
+      trBox = '<div class="tr-box">' +
+        '<div class="tr-row"><div class="tr-k">IPA</div><div class="tr-v ipa">' + esc(d.ipa) + '</div></div>' +
+        '<div class="tr-row"><div class="tr-k">Как читать</div><div class="tr-v ru-tr">' + esc(d.tr) + '</div></div>' +
+        '<div class="tr-legend">ˈ — ударение · ː — долгий гласный · <a href="theory.html#transcription">обозначения</a></div>' +
+        '</div>';
+    }
+
+    $("cardWrap").innerHTML =
+      '<div class="card">' +
+        '<div class="cap"><span class="dot"></span><span>' + d.lesson + ' · ' + d.sec + '</span>' +
+          '<span class="fl">' + esc(d.secRu) + ' &nbsp;·&nbsp; №' + d.n + esc(marks) + '</span></div>' +
+        '<div class="ru-side"><div class="lbl">Русский — переведите вслух</div>' +
+          '<div class="ru-txt">' + esc(d.ru) + '</div></div>' +
+        '<div class="de-side"><div class="lbl">Немецкий</div>' +
+          (S.shown ? '<div class="de-txt">' + esc(d.de) + '</div>' +
+                     (d.note ? '<div class="note">' + esc(d.note) + '</div>' : '')
+                   : '<div class="de-txt q">нажмите «Показать перевод» или пробел</div>') +
+          (S.shown ? trBox : '') +
+        '</div>' +
+        '<div class="acts">' +
+          '<button class="btn prim" id="bShow">' + (S.shown ? 'Скрыть перевод' : 'Показать перевод') + '</button>' +
+          '<button class="btn gold" id="bTr">' + (S.tr ? 'Скрыть транскрипцию' : 'Транскрипция') + '</button>' +
+          '<button class="btn" id="bSay">🔊 Прослушать</button>' +
+          '<button class="btn bad" id="bBad">↻ Повторить</button>' +
+          '<button class="btn ok" id="bOk">✓ Знаю</button>' +
+        '</div>' +
+      '</div>' +
+      '<div class="nav">' +
+        '<button id="bPrev">← Назад</button>' +
+        '<span class="idx">' + (S.i + 1) + ' / ' + S.deck.length + '</span>' +
+        '<button id="bNext">Дальше →</button>' +
+        '<span class="spacer"></span>' +
+        '<button id="bMix">Перемешать</button>' +
+      '</div>';
+
+    bind();
+  }
+
+  function finish(){
+    $("cardWrap").innerHTML =
+      '<div class="done"><h2>Круг закончен</h2>' +
+      '<p>' + (S.mode === "ticket" ? "Билет пройден" : "Прошли весь набор") + '</p>' +
+      '<div class="stat"><div><b>' + S.known.size + '</b>знаю</div>' +
+      '<div><b>' + S.agn.size + '</b>надо повторить</div>' +
+      '<div><b>' + S.deck.length + '</b>в наборе</div></div>' +
+      '<button class="btn prim" id="bAgain">Начать заново</button></div>';
+    $("bar").style.width = "100%";
+    $("bAgain").onclick = function(){ build(S.mode); };
+  }
+
+  function bind(){
+    var d = S.deck[S.i];
+    $("bShow").onclick = function(){ S.shown = !S.shown; if (!S.shown) S.tr = false; render(); };
+    $("bTr").onclick  = function(){ S.tr = !S.tr; if (S.tr) S.shown = true; render(); };
+    $("bSay").onclick = function(){ speak(d.de); };
+    $("bOk").onclick  = function(){ S.known.add(d.id); S.agn.delete(d.id); save("k", S.known); save("a", S.agn); next(); };
+    $("bBad").onclick = function(){ S.agn.add(d.id); S.known.delete(d.id); save("k", S.known); save("a", S.agn); next(); };
+    $("bNext").onclick = next;
+    $("bPrev").onclick = function(){ if (S.i > 0){ S.i--; S.shown = false; S.tr = false; render(); } };
+    $("bMix").onclick = function(){ S.deck = shuffle(S.deck); S.i = 0; S.shown = false; S.tr = false; render(); };
+  }
+
+  function next(){
+    if (S.i < S.deck.length - 1){ S.i++; S.shown = false; S.tr = false; render(); }
+    else { S.i = S.deck.length; render(); }
+  }
+
+  document.addEventListener("keydown", function(e){
+    if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
+    var k = e.key;
+    if (e.code === "Space"){ e.preventDefault(); if (S.i < S.deck.length){ S.shown = !S.shown; if (!S.shown) S.tr = false; render(); } }
+    else if (k === "ArrowRight"){ e.preventDefault(); if (S.i < S.deck.length) next(); }
+    else if (k === "ArrowLeft"){ e.preventDefault(); if (S.i > 0){ S.i--; S.shown = false; S.tr = false; render(); } }
+    else if (k === "t" || k === "T" || k === "е" || k === "Е"){ e.preventDefault(); if (S.i < S.deck.length){ S.tr = !S.tr; if (S.tr) S.shown = true; render(); } }
+    else if (k === "s" || k === "S" || k === "ы" || k === "Ы"){ if (S.i < S.deck.length) speak(S.deck[S.i].de); }
+    else if (k === "2"){ var b = $("bOk"); if (b) b.click(); }
+    else if (k === "1"){ var c = $("bBad"); if (c) c.click(); }
+  });
+
+  Array.prototype.forEach.call(document.querySelectorAll("[data-mode]"), function(b){
+    b.onclick = function(){
+      Array.prototype.forEach.call(document.querySelectorAll("[data-mode]"), function(x){ x.classList.remove("on"); });
+      b.classList.add("on"); build(b.dataset.mode);
+    };
+  });
+  Array.prototype.forEach.call(document.querySelectorAll("[data-filter]"), function(b){
+    b.onclick = function(){
+      Array.prototype.forEach.call(document.querySelectorAll("[data-filter]"), function(x){ x.classList.remove("on"); });
+      b.classList.add("on"); S.filter = b.dataset.filter; build(S.mode);
+    };
+  });
+
+  build("all");
+  if ("speechSynthesis" in window) speechSynthesis.getVoices();
+})();
+</script>
+</body>
+</html>

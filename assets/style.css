@@ -1,0 +1,225 @@
+/* ============ общее ============ */
+*{box-sizing:border-box}
+:root{
+  --ink:#0f1620; --ink2:#1d2733; --mut:#64748b; --mut2:#8b97a6;
+  --line:#e3e8ef; --line2:#cfd8e4; --bg:#f4f6f9; --card:#fff;
+  --acc:#1f4e8c; --acc-l:#eef2f8; --acc2:#a8562a;
+  --ok:#17795e; --bad:#a84343; --gold:#b9954f;
+  --serif:Georgia,"Times New Roman",serif;
+  --sans:"Segoe UI","Trebuchet MS",system-ui,sans-serif;
+  --mono:"Segoe UI",-apple-system,"Helvetica Neue",sans-serif;
+}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--bg);color:var(--ink2);
+  font-family:var(--sans);font-size:15px;line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:var(--acc);text-decoration:none}
+a:hover{text-decoration:underline}
+.wrap{max-width:900px;margin:0 auto;padding:0 18px 96px}
+.wide{max-width:1080px}
+
+/* ============ шапка ============ */
+header{position:sticky;top:0;z-index:30;background:rgba(244,246,249,.94);
+  backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.hd{max-width:900px;margin:0 auto;padding:11px 18px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.hd.wide{max-width:1080px}
+.brand{font-weight:700;font-size:15px;letter-spacing:-.01em;color:var(--ink);line-height:1.25}
+.brand small{display:block;font-weight:400;font-size:11px;color:var(--mut);letter-spacing:.02em;margin-top:2px}
+.spacer{flex:1}
+nav.main{display:flex;gap:4px;background:#e8edf4;padding:3px;border-radius:10px}
+nav.main a{font-size:13px;padding:6px 13px;border-radius:8px;color:#48566a;font-weight:500}
+nav.main a:hover{text-decoration:none;color:var(--ink)}
+nav.main a.on{background:#fff;color:var(--ink);font-weight:600;box-shadow:0 1px 2px rgba(16,26,41,.1)}
+.pill{font-size:12px;color:var(--mut);border:1px solid var(--line);background:#fff;
+  padding:4px 10px;border-radius:99px;white-space:nowrap}
+.pills{display:flex;gap:6px;flex-wrap:wrap}
+.pill b{color:var(--ink);font-variant-numeric:tabular-nums}
+.bar{height:3px;background:var(--line);overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#1f4e8c,#4b8ad6);transition:width .3s}
+
+/* ============ тренажёр ============ */
+.modes{display:flex;gap:8px;flex-wrap:wrap;margin:22px 0 16px;align-items:center}
+.modes button{font:inherit;font-size:13px;padding:8px 14px;border-radius:9px;cursor:pointer;
+  border:1px solid var(--line);background:#fff;color:#3d4a5c;transition:.15s}
+.modes button:hover{border-color:var(--line2)}
+.modes button.on{background:var(--ink);border-color:var(--ink);color:#fff;font-weight:600}
+.divider{width:1px;height:22px;background:var(--line2);margin:0 2px}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;
+  box-shadow:0 1px 2px rgba(16,26,41,.04),0 14px 34px -20px rgba(16,26,41,.3)}
+.cap{display:flex;align-items:center;gap:10px;padding:12px 24px;border-bottom:1px solid var(--line);
+  font-size:11.5px;color:var(--mut);letter-spacing:.07em;text-transform:uppercase;font-weight:600}
+.cap .dot{width:7px;height:7px;border-radius:50%;background:var(--acc);flex:none}
+.cap .fl{margin-left:auto;letter-spacing:.01em;text-transform:none;font-weight:400;text-align:right}
+
+.ru-side{padding:28px 26px 24px}
+.de-side{border-top:1px dashed var(--line2);padding:20px 26px 22px;background:#fbfcfe}
+.lbl{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:#9aa6b5;margin-bottom:9px}
+.ru-txt{font-family:var(--serif);font-size:20px;line-height:1.5;color:var(--ink2)}
+.de-txt{font-family:var(--serif);font-size:20px;line-height:1.5;font-weight:700;color:#0b1220}
+.de-txt.q{color:#b6c0cc;font-weight:400;font-size:15px;font-style:italic;font-family:var(--sans)}
+.note{margin-top:12px;font-size:12.5px;line-height:1.5;color:#6f5528;
+  border-left:2px solid #d9bc86;padding-left:11px}
+.note::before{content:"▸ ";color:var(--gold)}
+
+/* --- транскрипция --- */
+.tr-wait{margin-top:6px;font-size:13px;color:var(--mut2);font-style:italic}
+.tr-box{margin-top:16px;border:1px solid var(--line2);border-left:3px solid var(--gold);
+  border-radius:0 10px 10px 0;background:#fffdf8;padding:14px 16px;animation:trIn .22s ease}
+@keyframes trIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+.tr-row{display:flex;gap:12px;align-items:baseline}
+.tr-row + .tr-row{margin-top:10px;padding-top:10px;border-top:1px dashed #ece5d6}
+.tr-k{flex:0 0 88px;font-size:10px;letter-spacing:.13em;text-transform:uppercase;
+  color:#a08c62;font-weight:700;padding-top:4px}
+.tr-v{flex:1;min-width:0}
+.ipa{font-family:var(--mono);font-size:15.5px;line-height:1.75;color:#3d4a5c;
+  letter-spacing:.01em;word-spacing:.12em}
+.ru-tr{font-family:var(--sans);font-size:17px;line-height:1.7;color:#243044;letter-spacing:.01em}
+.tr-legend{font-size:11.5px;color:var(--mut2);margin-top:10px}
+.tr-legend a{color:var(--mut)}
+
+.acts{display:flex;gap:9px;flex-wrap:wrap;padding:0 24px 22px}
+.btn{font:inherit;font-size:14px;padding:10px 18px;border-radius:10px;cursor:pointer;
+  border:1px solid var(--line);background:#fff;color:#33404f;transition:.15s;
+  display:inline-flex;align-items:center;gap:8px}
+.btn:hover{border-color:#b9c6d8}
+.btn.prim{background:var(--acc);border-color:var(--acc);color:#fff;font-weight:600}
+.btn.prim:hover{background:#1a4379;border-color:#1a4379}
+.btn.gold{color:#8a6a2f;border-color:#e4d6b6;background:#fffdf8}
+.btn.gold:hover{background:#fdf6e8;border-color:#d9c396}
+.btn.ok{color:var(--ok);border-color:#c4ded6}
+.btn.ok:hover{background:#eef7f4;border-color:#8fc7b7}
+.btn.bad{color:var(--bad);border-color:#e3cccc}
+.btn.bad:hover{background:#fdf1f1;border-color:#d9a9a9}
+.btn:disabled{opacity:.4;cursor:default;background:#fff}
+
+.nav{display:flex;align-items:center;gap:10px;margin-top:16px;flex-wrap:wrap}
+.nav .idx{font-size:13px;color:var(--mut);font-variant-numeric:tabular-nums}
+.nav button{font:inherit;font-size:13px;padding:8px 14px;border-radius:9px;
+  border:1px solid var(--line);background:#fff;cursor:pointer;color:#33404f}
+.nav button:hover{border-color:#b9c6d8}
+
+.hintbar{margin-top:24px;font-size:12.5px;color:var(--mut);line-height:2}
+kbd{font-family:ui-monospace,Consolas,monospace;font-size:11px;background:#fff;border:1px solid var(--line);
+  border-bottom-width:2px;border-radius:5px;padding:1px 6px;color:#3d4a5c;white-space:nowrap}
+
+.done{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:34px 26px;text-align:center}
+.done h2{margin:0 0 8px;font-size:22px;color:var(--ink)}
+.done p{margin:0;color:var(--mut);font-size:14px}
+.stat{display:flex;gap:30px;justify-content:center;margin:24px 0 26px;flex-wrap:wrap}
+.stat div{font-size:12.5px;color:var(--mut)}
+.stat b{display:block;font-size:27px;color:var(--ink);font-family:var(--serif);font-weight:700}
+
+/* ============ теория ============ */
+.hero{padding:34px 0 6px}
+.hero .kick{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--acc);font-weight:700}
+.hero h1{margin:8px 0 10px;font-size:34px;line-height:1.1;letter-spacing:-.02em;color:var(--ink);font-weight:700}
+.hero p{margin:0;color:var(--mut);font-size:16px;max-width:60ch}
+.toc{display:flex;gap:8px;flex-wrap:wrap;margin:22px 0 4px}
+.toc a{font-size:13px;padding:7px 13px;border-radius:99px;background:#fff;border:1px solid var(--line);
+  color:#48566a;font-weight:500}
+.toc a:hover{text-decoration:none;border-color:var(--line2);color:var(--ink)}
+
+section.blk{margin-top:44px;scroll-margin-top:80px}
+.blk-h{display:flex;align-items:baseline;gap:12px;border-bottom:2px solid var(--ink);padding-bottom:9px;margin-bottom:20px}
+.blk-h .num{font-size:11px;letter-spacing:.2em;color:var(--mut2);font-weight:700}
+.blk-h h2{margin:0;font-size:22px;letter-spacing:-.015em;color:var(--ink);font-weight:700}
+
+.panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 22px;margin-bottom:16px}
+.panel h3{margin:0 0 8px;font-size:15px;color:var(--ink)}
+.panel p{margin:0 0 10px}
+.panel p:last-child{margin-bottom:0}
+.panel ul{margin:0;padding-left:19px}
+.panel li{margin-bottom:7px}
+.panel li:last-child{margin-bottom:0}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:760px){.grid2{grid-template-columns:1fr}}
+
+table.t{width:100%;border-collapse:collapse;font-size:14px}
+table.t th{text-align:left;font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--mut);font-weight:700;border-bottom:1px solid var(--line2);padding:0 14px 9px 0}
+table.t td{padding:9px 14px 9px 0;border-bottom:1px solid var(--line);vertical-align:top}
+table.t tr:last-child td{border-bottom:none}
+table.t td.k{font-weight:700;color:var(--ink);white-space:nowrap}
+table.t td.s{color:var(--acc2);white-space:nowrap;font-weight:600}
+table.t td.ex{color:var(--mut)}
+
+.vgroup{margin-bottom:22px}
+.vgroup h3{margin:0 0 10px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--acc);font-weight:700}
+.vlist{display:flex;flex-wrap:wrap;gap:6px 10px}
+.vlist span{font-size:13.5px;background:#fff;border:1px solid var(--line);border-radius:7px;padding:4px 10px}
+.vlist i{color:var(--mut);font-style:normal}
+
+.gbox{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 22px;margin-bottom:14px}
+.gbox h3{margin:0 0 4px;font-size:15px;color:var(--ink)}
+.gbox .pat{font-size:13px;color:var(--acc);font-weight:600;margin-bottom:10px}
+.gbox p{margin:0;font-size:14px;line-height:1.65}
+.gbox code{font-family:var(--mono);background:#f2f5f9;padding:1px 5px;border-radius:4px;font-size:13px;color:#2b3a50}
+.gbox b{color:#8f3d12}
+
+/* таблица всех пар */
+.acc{border:1px solid var(--line);border-radius:12px;background:#fff;overflow:hidden;margin-bottom:12px}
+.acc summary{list-style:none;cursor:pointer;padding:14px 18px;display:flex;align-items:center;gap:12px;
+  font-size:14.5px;font-weight:600;color:var(--ink);background:#fbfcfe}
+.acc summary::-webkit-details-marker{display:none}
+.acc summary:hover{background:#f5f8fc}
+.acc summary .k{flex:none;font-size:11px;font-weight:700;color:#fff;background:var(--acc);
+  border-radius:5px;padding:2px 8px;letter-spacing:.05em}
+.acc summary .cnt{margin-left:auto;font-size:12px;color:var(--mut);font-weight:400}
+.acc summary .arw{flex:none;color:var(--mut2);transition:.18s;font-size:12px}
+.acc[open] summary .arw{transform:rotate(90deg)}
+.acc .body{padding:4px 18px 14px}
+.pair{padding:11px 0;border-top:1px solid var(--line)}
+.pair:first-child{border-top:none}
+.pair .n{font-size:11px;color:#a8b2c0;margin-right:7px;font-variant-numeric:tabular-nums}
+.pair .ru{color:#4c5666;font-size:14px;line-height:1.5}
+.pair .de{color:#0b1220;font-weight:700;font-family:var(--serif);font-size:15.5px;line-height:1.5;margin-top:2px}
+.pair .nt{font-size:12.5px;color:#6f5528;margin-top:4px;padding-left:1px}
+.pair .nt::before{content:"▸ ";color:var(--gold)}
+.pair .tr{font-size:12.8px;color:#5a6678;margin-top:6px;line-height:1.7;display:none}
+.pair .tr .ip{font-family:var(--mono);color:#65707f}
+.pair .tr .rr{color:#243044;font-size:14px;margin-top:3px}
+body.showall .pair .tr{display:block}
+
+.togglebar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+.togglebar .hint{font-size:12.5px;color:var(--mut)}
+
+footer{margin-top:56px;padding-top:20px;border-top:1px solid var(--line);
+  font-size:12.5px;color:var(--mut2);line-height:1.7}
+
+@media (max-width:640px){
+  .ru-txt,.de-txt{font-size:17px}
+  .ru-side,.de-side{padding:20px 18px}
+  .acts{padding:0 18px 20px}
+  .cap{padding:11px 18px}
+  .hero h1{font-size:26px}
+  .wrap{padding:0 14px 80px}
+  .tr-row{flex-direction:column;gap:3px}
+  .tr-k{flex:none;padding-top:0}
+  .ipa{font-size:14px}
+  .ru-tr{font-size:15.5px}
+  .hd{justify-content:space-between;gap:8px;padding:9px 14px}
+  .spacer{display:none}
+  .brand{flex:1 1 auto;min-width:0;font-size:13.5px}
+  .brand small{font-size:10px}
+  nav.main a{padding:5px 10px;font-size:12px}
+  .pill{font-size:11px;padding:3px 8px}
+  .pills{width:100%;order:5}
+  .modes{gap:6px;margin:16px 0 12px}
+  .modes button{font-size:12.5px;padding:7px 11px}
+  .divider{flex:1 0 100%;height:0;margin:0}
+  .hintbar{font-size:12px;line-height:2.2}
+  .acc summary{padding:12px 14px;font-size:13.5px}
+  .acc .body{padding:2px 14px 12px}
+  table.t{font-size:13px}
+  table.t th,table.t td{padding-right:9px}
+  table.t td.k,table.t td.s{white-space:normal}
+  .panel{padding:16px 16px}
+}
+@media print{
+  header,.modes,.acts,.nav,.hintbar,.toc,.togglebar{display:none}
+  body{background:#fff}
+  .card,.panel,.gbox,.acc{box-shadow:none}
+}

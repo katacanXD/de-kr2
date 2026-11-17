@@ -11,7 +11,7 @@ LESSONS = [
             ("A", "У корпуса «И»", "Vor der Ausstellung", [
                 ("Во вторник Илья, Дмитрий и Катарина пришли немного раньше к корпусу «И».",
                  "An einem Dienstag kamen Ilja, Dmitrij und Katharina etwas früher zum Gebäude „I“.",
-                 "«во вторник» → an einem Dienstag (как-то во вторник). Глагол второй: kamen … zum Gebäude."),
+                 "«во вторник» → an einem Dienstag — здесь «как-то во вторник». «К корпусу» → zum Gebäude."),
                 ("Отделение иностранных языков находилось на третьем этаже этого здания.",
                  "Die Abteilung für Fremdsprachen befand sich im dritten Stock dieses Gebäudes.",
                  "«на этаже» → im … Stock (Dativ). befand sich = находилось."),
