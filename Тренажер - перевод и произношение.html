@@ -1,0 +1,270 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Тренажёр · перевод RU→DE · КМ</title>
+<style>
+*{box-sizing:border-box}
+:root{
+  --ink:#0f1620; --mut:#6b7a8d; --line:#e3e8ef; --bg:#f4f6f9;
+  --acc:#1f4e8c; --acc2:#a8562a; --ok:#17795e; --bad:#a84343;
+}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:"Segoe UI","Trebuchet MS",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:860px;margin:0 auto;padding:0 16px 90px}
+
+header{position:sticky;top:0;z-index:20;background:rgba(244,246,249,.93);
+  backdrop-filter:blur(9px);border-bottom:1px solid var(--line);margin-bottom:20px}
+.hd{max-width:860px;margin:0 auto;padding:12px 16px 10px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.brand{font-weight:700;font-size:15px;letter-spacing:-.01em}
+.brand small{display:block;font-weight:400;font-size:11px;color:var(--mut);letter-spacing:.02em;margin-top:1px}
+.pill{font-size:11.5px;color:var(--mut);border:1px solid var(--line);background:#fff;
+  padding:4px 9px;border-radius:99px;white-space:nowrap}
+.pill b{color:var(--ink)}
+.spacer{flex:1}
+.bar{height:4px;background:var(--line);border-radius:9px;overflow:hidden;margin-top:2px}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#1f4e8c,#3f7fd0);transition:width .3s}
+
+.modes{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 18px}
+.modes button{font:inherit;font-size:13px;padding:8px 14px;border-radius:9px;cursor:pointer;
+  border:1px solid var(--line);background:#fff;color:#3d4a5c;transition:.15s}
+.modes button:hover{border-color:#c2cddd}
+.modes button.on{background:var(--ink);border-color:var(--ink);color:#fff;font-weight:600}
+
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden;
+  box-shadow:0 1px 2px rgba(16,26,41,.04),0 12px 30px -18px rgba(16,26,41,.28)}
+.cap{display:flex;align-items:center;gap:10px;padding:13px 22px;border-bottom:1px solid var(--line);
+  font-size:11.5px;color:var(--mut);letter-spacing:.06em;text-transform:uppercase;font-weight:600}
+.cap .dot{width:7px;height:7px;border-radius:50%;background:var(--acc)}
+.cap .fl{margin-left:auto;letter-spacing:.02em;text-transform:none;font-weight:400}
+
+.ru-side{padding:30px 26px 26px}
+.ru-side .lbl{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:#9aa6b5;margin-bottom:10px}
+.ru-txt{font-family:Georgia,"Times New Roman",serif;font-size:20px;line-height:1.5;color:#1d2733}
+.ru-txt.q{color:#8b97a6;font-size:14px;font-style:italic}
+
+.de-side{border-top:1px dashed #cfd8e4;padding:22px 26px 26px;background:#fbfcfe}
+.de-side .lbl{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:#9aa6b5;margin-bottom:10px}
+.de-txt{font-family:Georgia,"Times New Roman",serif;font-size:20px;line-height:1.5;font-weight:700;color:#0b1220}
+.de-txt.q{color:#b6c0cc;font-weight:400}
+.note{margin-top:12px;font-size:12.5px;line-height:1.5;color:#7a5d33;border-left:2px solid #d9bc86;padding-left:10px}
+
+.acts{display:flex;gap:10px;flex-wrap:wrap;padding:0 26px 24px}
+.btn{font:inherit;font-size:14px;padding:11px 20px;border-radius:10px;cursor:pointer;border:1px solid var(--line);
+  background:#fff;color:#33404f;transition:.15s;display:flex;align-items:center;gap:8px}
+.btn:hover{border-color:#b9c6d8}
+.btn.prim{background:var(--acc);border-color:var(--acc);color:#fff;font-weight:600}
+.btn.prim:hover{background:#1a4379;border-color:#1a4379}
+.btn.ok{color:var(--ok);border-color:#c4ded6}
+.btn.ok:hover{background:#eef7f4;border-color:#8fc7b7}
+.btn.bad{color:var(--bad);border-color:#e3cccc}
+.btn.bad:hover{background:#fdf1f1;border-color:#d9a9a9}
+.btn:disabled{opacity:.4;cursor:default}
+
+.nav{display:flex;align-items:center;gap:12px;margin-top:18px}
+.nav .idx{font-size:13px;color:var(--mut);font-variant-numeric:tabular-nums}
+.nav button{font:inherit;font-size:13px;padding:8px 14px;border-radius:9px;border:1px solid var(--line);
+  background:#fff;cursor:pointer;color:#33404f}
+.nav button:hover{border-color:#b9c6d8}
+
+.hintbar{margin-top:22px;font-size:12px;color:var(--mut);line-height:1.9}
+kbd{font-family:ui-monospace,Consolas,monospace;font-size:11px;background:#fff;border:1px solid var(--line);
+  border-bottom-width:2px;border-radius:5px;padding:1px 6px;color:#3d4a5c}
+
+.done{background:#fff;border:1px solid var(--line);border-radius:16px;padding:34px 26px;text-align:center}
+.done h2{margin:0 0 8px;font-size:22px}
+.done p{margin:0 0 20px;color:var(--mut);font-size:14px}
+.stat{display:flex;gap:26px;justify-content:center;margin:22px 0}
+.stat div{font-size:13px;color:var(--mut)}
+.stat b{display:block;font-size:26px;color:var(--ink);font-family:Georgia,serif}
+
+@media (max-width:640px){
+  .ru-txt,.de-txt{font-size:17px}
+  .ru-side,.de-side{padding:22px 18px}
+  .acts{padding:0 18px 20px}
+  .cap{padding:11px 18px}
+}
+@media print{
+  header,.modes,.acts,.nav,.hintbar{display:none}
+  body{background:#fff}
+  .card{box-shadow:none}
+}
+</style></head><body>
+
+<header><div class="hd">
+  <div class="brand">Тренажёр · перевод RU → DE<small>Урок 2 · упр. 4 &nbsp;|&nbsp; Урок 3 · упр. 4</small></div>
+  <div class="spacer"></div>
+  <div class="pill">знаю <b id="cKnown">0</b></div>
+  <div class="pill">повторить <b id="cAgn">0</b></div>
+  <div class="pill">в наборе <b id="cTotal">0</b></div>
+</div><div class="bar"><i id="bar"></i></div></header>
+
+<div class="wrap">
+  <div class="modes">
+    <button data-mode="all" class="on">Все подряд</button>
+    <button data-mode="ticket">Билет · 10 случайных</button>
+    <button data-mode="hard">Только сложные</button>
+    <span class="spacer"></span>
+    <button data-filter="all" class="on">оба урока</button>
+    <button data-filter="L2">только урок 2</button>
+  </div>
+
+  <div id="cardWrap"></div>
+
+  <div class="hintbar">
+    <kbd>пробел</kbd> показать/скрыть перевод &nbsp;·&nbsp; <kbd>→</kbd> дальше &nbsp;·&nbsp;
+    <kbd>←</kbd> назад &nbsp;·&nbsp; <kbd>2</kbd> знаю &nbsp;·&nbsp; <kbd>1</kbd> повторить &nbsp;·&nbsp;
+    <kbd>s</kbd> прослушать
+    <br>Озвучка идёт через голос браузера (de-DE). Если голоса нет — установите немецкий язык в системе.
+    Прогресс сохраняется в браузере.
+  </div>
+</div>
+
+<script>
+const DATA = [{"lesson": "Урок 2", "sec": "A", "secRu": "У корпуса «И»", "n": 1, "ru": "Во вторник Илья, Дмитрий и Катарина пришли немного раньше к корпусу «И».", "de": "An einem Dienstag kamen Ilja, Dmitrij und Katharina etwas früher zum Gebäude „I“.", "note": "«во вторник» → an einem Dienstag (как-то во вторник). Глагол второй: kamen … zum Gebäude."}, {"lesson": "Урок 2", "sec": "A", "secRu": "У корпуса «И»", "n": 2, "ru": "Отделение иностранных языков находилось на третьем этаже этого здания.", "de": "Die Abteilung für Fremdsprachen befand sich im dritten Stock dieses Gebäudes.", "note": "«на этаже» → im … Stock (Dativ). befand sich = находилось."}, {"lesson": "Урок 2", "sec": "A", "secRu": "У корпуса «И»", "n": 3, "ru": "На первом этаже они заметили большой LED-экран с приглашением посетить выставку музея РТУ МИРЭА.", "de": "Im Erdgeschoss bemerkten sie einen großen LED-Bildschirm mit der Einladung, die Ausstellung des Museums der RTU MIREA zu besuchen.", "note": "Русский «первый этаж» = Erdgeschoss (немецкий 1. Stock — это второй!). Приглашение «посетить» → zu besuchen в конце."}, {"lesson": "Урок 2", "sec": "A", "secRu": "У корпуса «И»", "n": 4, "ru": "У нас ещё почти три четверти часа, — сказал Илья и посмотрел на свой телефон.", "de": "„Wir haben noch fast eine Dreiviertelstunde“, sagte Ilja und schaute auf sein Handy.", "note": "Dreiviertelstunde — одно слово, «три четверти часа»."}, {"lesson": "Урок 2", "sec": "A", "secRu": "У корпуса «И»", "n": 5, "ru": "Я очень интересуюсь историей вашего университета.", "de": "„Ich interessiere mich sehr für die Geschichte eurer Universität.“", "note": "sich interessieren für + Akk. Студенты на «ты» → eurer (не Ihr)."}, {"lesson": "Урок 2", "sec": "A", "secRu": "У корпуса «И»", "n": 6, "ru": "Хотя мы каждую неделю проходим мимо стендов.", "de": "„Obwohl wir jede Woche an den Ständen vorbeilaufen.“", "note": "vorbeilaufen an + Dat.; отделяемая приставка vorbei- уходит в конец. Стенд → der Stand."}, {"lesson": "Урок 2", "sec": "A", "secRu": "У корпуса «И»", "n": 7, "ru": "Выставка была свободно доступна — её можно было посетить в любое время.", "de": "Die Ausstellung war frei zugänglich — man konnte sie jederzeit besuchen.", "note": "frei zugänglich = свободный доступ; jederzeit = в любое время."}, {"lesson": "Урок 2", "sec": "B", "secRu": "Основание", "n": 1, "ru": "Путь нынешнего РТУ МИРЭА начался в 1947 году.", "de": "Der Weg der heutigen RTU MIREA begann im Jahr 1947.", "note": "«в … году» → im Jahr 1947 (или einfach 1947)."}, {"lesson": "Урок 2", "sec": "B", "secRu": "Основание", "n": 2, "ru": "Там готовили инженеров, которые были срочно нужны стране после войны.", "de": "Man bildete dort Ingenieure aus, die das Land nach dem Krieg dringend brauchte.", "note": "man + глагол в 3 л. ед. ч. ausbilden — отделяемая приставка: bildete … aus."}, {"lesson": "Урок 2", "sec": "B", "secRu": "Основание", "n": 3, "ru": "Это были всего лишь девять инженеров — специалисты по радиотехнике, теплоэнергетике, электрофизике и электромеханике.", "de": "Es waren nur neun Ingenieure — Spezialisten für Radiotechnik, Wärmeenergietik, Elektrophysik und Elektromechanik.", "note": "Spezialist für + Akk. «всего лишь» → nur."}, {"lesson": "Урок 2", "sec": "B", "secRu": "Основание", "n": 4, "ru": "Однако эти девять первопроходцев заложили основу для будущих научных и технических достижений вуза.", "de": "Doch diese neun Pioniere legten den Grundstein für die zukünftigen wissenschaftlichen und technischen Errungenschaften der Hochschule.", "note": "den Grundstein legen für + Akk — устойчивое выражение «заложить основу»."}, {"lesson": "Урок 2", "sec": "B", "secRu": "Основание", "n": 5, "ru": "На них были видны молодые мужчины и женщины в одежде послевоенного времени.", "de": "Man sah darauf junge Männer und Frauen in der Kleidung der Nachkriegszeit.", "note": "«на них» (на фотографиях) → darauf. Порядок: Man sah darauf … = «на них были видны»."}, {"lesson": "Урок 2", "sec": "B", "secRu": "Основание", "n": 6, "ru": "Они стояли перед скромным зданием и держали свои дипломы в руках.", "de": "Sie standen vor einem bescheidenen Gebäude und hielten ihre Diplome in den Händen.", "note": "bescheiden = скромный; etwas in den Händen halten."}, {"lesson": "Урок 2", "sec": "C", "secRu": "Путь в космос", "n": 1, "ru": "В последующие годы институт неуклонно рос.", "de": "In den folgenden Jahren wuchs das Institut stetig.", "note": "wuchs — Präteritum von wachsen (расти); stetig = неуклонно."}, {"lesson": "Урок 2", "sec": "C", "secRu": "Путь в космос", "n": 2, "ru": "Расширяли программу обучения и принимали всё больше студентов.", "de": "Man erweiterte das Studienangebot und nahm immer mehr Studenten auf.", "note": "aufnehmen → nahm … auf. Studienangebot = программа обучения."}, {"lesson": "Урок 2", "sec": "C", "secRu": "Путь в космос", "n": 3, "ru": "Он изучал радиотехнику и закончил учёбу с отличием.", "de": "Er studierte Radiotechnik und schloss sein Studium mit Auszeichnung ab.", "note": "abschließen → schloss … ab; mit Auszeichnung = с отличием."}, {"lesson": "Урок 2", "sec": "C", "secRu": "Путь в космос", "n": 4, "ru": "В 1961 году произошло нечто необычайное.", "de": "Im Jahr 1961 geschah etwas Außergewöhnliches.", "note": "geschehen → geschah. etwas + прилагательное с большой буквы: etwas Außergewöhnliches."}, {"lesson": "Урок 2", "sec": "C", "secRu": "Путь в космос", "n": 5, "ru": "Каганов разработал радиопередатчик для космического корабля «Восток».", "de": "W. I. Kaganow entwickelte den Radiosender für das Raumschiff „Wostok“.", "note": "entwickeln = разрабатывать. Raumschiff — космический корабль."}, {"lesson": "Урок 2", "sec": "C", "secRu": "Путь в космос", "n": 6, "ru": "Радиосвязь между космонавтом и Землёй работала безупречно — благодаря технике выпускника ВЗЭИ.", "de": "Die Funkverbindung zwischen dem Kosmonauten und der Erde funktionierte einwandfrei — dank der Technik eines WZEI-Absolventen.", "note": "dank + Genitiv → dank der Technik. einwandfrei = безупречно."}, {"lesson": "Урок 2", "sec": "C", "secRu": "Путь в космос", "n": 7, "ru": "Можно было с полным правом сказать: часть истории космонавтики была написана в этом вузе.", "de": "Man konnte mit Recht sagen: Ein Teil der Weltraumgeschichte wurde an dieser Hochschule geschrieben.", "note": "mit Recht = с полным правом. Passiv: wurde … geschrieben."}, {"lesson": "Урок 2", "sec": "D", "secRu": "Большая трансформация", "n": 1, "ru": "1960-е годы принесли коренные перемены.", "de": "Die 1960er Jahre brachten grundlegende Veränderungen.", "note": "1960er Jahre — «60-е годы». grundlegend = коренной."}, {"lesson": "Урок 2", "sec": "D", "secRu": "Большая трансформация", "n": 2, "ru": "Академическое образование тесно связали с потребностями оборонной промышленности.", "de": "Man verband die akademische Ausbildung eng mit den Bedürfnissen der Verteidigungsindustrie.", "note": "verbinden mit + Dat.; eng = тесно."}, {"lesson": "Урок 2", "sec": "D", "secRu": "Большая трансформация", "n": 3, "ru": "Студенты и профессора совместно работали над реальными проектами для промышленности.", "de": "Studenten und Professoren arbeiteten gemeinsam an realen Projekten für die Industrie.", "note": "arbeiten an + Dat. → an realen Projekten."}, {"lesson": "Урок 2", "sec": "D", "secRu": "Большая трансформация", "n": 4, "ru": "Новое название отражало расширенный профиль вуза.", "de": "Der neue Name spiegelte das erweiterte Profil der Hochschule wider.", "note": "widerspiegeln — отделяемая приставка wider: spiegelte … wider."}, {"lesson": "Урок 2", "sec": "D", "secRu": "Большая трансформация", "n": 5, "ru": "Теперь исследовали и преподавали не только в области радиотехники, но и в электронике и технике автоматизации.", "de": "Man forschte und lehrte nun nicht nur in der Radiotechnik, sondern auch in der Elektronik und Automatisierungstechnik.", "note": "nicht nur …, sondern auch … — ключевая пара для этого предложения."}, {"lesson": "Урок 2", "sec": "D", "secRu": "Большая трансформация", "n": 6, "ru": "Затем началось время большого строительства.", "de": "Dann begann eine Zeit des großen Bauens.", "note": "das Bauen (субстантивированный инфинитив) → des großen Bauens."}, {"lesson": "Урок 2", "sec": "D", "secRu": "Большая трансформация", "n": 7, "ru": "Три года спустя, в 1979 году, студенты начали занятия в главном корпусе «А».", "de": "Drei Jahre später, 1979, begannen die Studenten ihren Unterricht im Hauptgebäude „A“ — demselben Gebäude, in dem Ilja, Dmitrij und Katharina heute studierten.", "note": "В тексте после «A» идёт уточнение через тире — на экзамене достаточно части до «A»."}, {"lesson": "Урок 2", "sec": "E", "secRu": "«Буран» садится автоматически", "n": 1, "ru": "В конце 1980-х годов МИРЭА удался ещё один технологический прорыв.", "de": "Ende der 1980er Jahre gelang der MIREA ein weiterer technologischer Durchbruch.", "note": "etwas gelingt jemandem: gelang der MIREA. Durchbruch = прорыв."}, {"lesson": "Урок 2", "sec": "E", "secRu": "«Буран» садится автоматически", "n": 2, "ru": "Под руководством профессора А.П. Реутова разработали автоматическую систему посадки для многоразового космического корабля «Буран».", "de": "Unter der Leitung von Professor A. P. Reutow entwickelte man ein automatisches Landesystem für das wiederverwendbare Raumschiff „Buran“.", "note": "unter der Leitung von = под руководством. wiederverwendbar = многоразовый."}, {"lesson": "Урок 2", "sec": "E", "secRu": "«Буран» садится автоматически", "n": 3, "ru": "Космический корабль дважды облетел Землю и затем приземлился полностью автоматически — без пилота на борту.", "de": "Das Raumschiff umkreiste die Erde zweimal und landete dann vollautomatisch — ohne Piloten an Bord.", "note": "umkreisen = облетать (вокруг). ohne + Akk → ohne Piloten."}, {"lesson": "Урок 2", "sec": "E", "secRu": "«Буран» садится автоматически", "n": 4, "ru": "Это была первая беспилотная посадка орбитального аппарата в истории космонавтики.", "de": "Es war die erste unbemannte Landung eines Orbitalfluggeräts in der Geschichte der Raumfahrt.", "note": "unbemannt = беспилотный. Genitiv: eines Orbitalfluggeräts."}, {"lesson": "Урок 2", "sec": "E", "secRu": "«Буран» садится автоматически", "n": 5, "ru": "Отклонение при посадке составило всего три метра — результат, который впечатлил весь мир.", "de": "Die Landeabweichung betrug nur drei Meter — ein Ergebnis, das die ganze Welt beeindruckte.", "note": "betragen → betrug = составлять. Landeabweichung — одно слово."}, {"lesson": "Урок 2", "sec": "E", "secRu": "«Буран» садится автоматически", "n": 6, "ru": "МИРЭА гордился тем, что внёс решающий вклад в это историческое событие.", "de": "Und die MIREA war stolz darauf, einen entscheidenden Beitrag zu diesem historischen Ereignis geleistet zu haben.", "note": "stolz sein auf + Akk. Конструкция … geleistet zu haben = «что внёс» (инфинитив перфект)."}, {"lesson": "Урок 2", "sec": "F", "secRu": "Новые времена, новые пути", "n": 1, "ru": "1990-е годы принесли большие перемены для всей страны и для МИРЭА.", "de": "Die 1990er Jahre brachten große Veränderungen für das ganze Land und auch für die MIREA.", "note": "brachten + Veränderungen — тот же рисунок, что в D1."}, {"lesson": "Урок 2", "sec": "F", "secRu": "Новые времена, новые пути", "n": 2, "ru": "По этому поводу МИРЭА получил благодарственную грамоту Президента Российской Федерации.", "de": "Aus diesem Anlass erhielt die MIREA eine Dankurkunde des Präsidenten der Russischen Föderation.", "note": "aus diesem Anlass = по этому поводу. erhalten → erhielt."}, {"lesson": "Урок 2", "sec": "F", "secRu": "Новые времена, новые пути", "n": 3, "ru": "Тем самым отметили заслуги вуза в подготовке инженеров и учёных.", "de": "Man würdigte damit die Verdienste der Hochschule um die Ausbildung von Ingenieuren und Wissenschaftlern.", "note": "würdigen = отметить, почтить. Verdienste um + Akk = заслуги в чём-л."}, {"lesson": "Урок 2", "sec": "F", "secRu": "Новые времена, новые пути", "n": 4, "ru": "Это был первый раз в истории российского высшего образования, когда эту должность ввели.", "de": "Es war das erste Mal in der russischen Hochschulgeschichte, dass man diese Position einführte.", "note": "das erste Mal …, dass … В придаточном глагол в конце: einführte."}, {"lesson": "Урок 2", "sec": "F", "secRu": "Новые времена, новые пути", "n": 5, "ru": "Также в 1998 году основали «Студенческий союз МИРЭА» — платформу для студенческих инициатив и проектов.", "de": "Ebenfalls 1998 gründete man den „Studentenverband der MIREA“ — eine Plattform für studentische Initiativen und Projekte.", "note": "ebenfalls 1998 = также в 1998. gründen = основать."}, {"lesson": "Урок 2", "sec": "G", "secRu": "Рост и интеграция", "n": 1, "ru": "Новый век принёс фазу расширения.", "de": "Das neue Jahrhundert brachte eine Phase der Erweiterung.", "note": "Erweiterung = расширение."}, {"lesson": "Урок 2", "sec": "G", "secRu": "Рост и интеграция", "n": 2, "ru": "Объединили сильные стороны трёх вузов под одной крышей.", "de": "Man vereinte die Stärken dreier Hochschulen unter einem Dach.", "note": "unter einem Dach = под одной крышей. dreier — Genitiv от drei."}, {"lesson": "Урок 2", "sec": "G", "secRu": "Рост и интеграция", "n": 3, "ru": "В 2018 году университет получил своё нынешнее название.", "de": "2018 erhielt die Universität ihren heutigen Namen.", "note": "В тексте далее идёт само название в кавычках — оно необязательно."}, {"lesson": "Урок 2", "sec": "G", "secRu": "Рост и интеграция", "n": 4, "ru": "В том же году вуз получил официальную эмблему с символикой науки и техники.", "de": "Im selben Jahr bekam die Hochschule ein offizielles Emblem mit der Symbolik von Wissenschaft und Technik.", "note": "im selben Jahr = в том же году. bekommen → bekam."}, {"lesson": "Урок 2", "sec": "G", "secRu": "Рост и интеграция", "n": 5, "ru": "Эмблему внесли в Государственный геральдический регистр — особая честь для образовательного учреждения.", "de": "Man trug das Emblem in das Staatliche Heraldische Register ein — eine besondere Ehre für eine Bildungseinrichtung.", "note": "eintragen → trug … ein (отделяемая приставка ein-)."}, {"lesson": "Урок 2", "sec": "H", "secRu": "Инновации и будущее", "n": 1, "ru": "В 2020-е годы РТУ МИРЭА вновь доказал своё значение для страны.", "de": "In den 2020er Jahren bewies die RTU MIREA erneut ihre Bedeutung für das Land.", "note": "beweisen → bewies. erneut = вновь."}, {"lesson": "Урок 2", "sec": "H", "secRu": "Инновации и будущее", "n": 2, "ru": "Вакцину разработали в рекордные сроки, и она стала известна во всём мире.", "de": "Man entwickelte den Impfstoff in Rekordzeit, und er wurde weltweit bekannt.", "note": "in Rekordzeit = в рекордные сроки. der Impfstoff — вакцина."}, {"lesson": "Урок 2", "sec": "H", "secRu": "Инновации и будущее", "n": 3, "ru": "Студенческие технологии отправили в космос — почти 65 лет после радиопередатчика Каганова на космическом корабле «Восток».", "de": "Man schickte damit studentische Technologie ins All — fast 65 Jahre nach dem Radiosender von Kaganow auf dem Raumschiff „Wostok“.", "note": "ins All = в космос. schickte … damit — «тем самым отправили»."}, {"lesson": "Урок 2", "sec": "H", "secRu": "Инновации и будущее", "n": 4, "ru": "Тем самым создали пространство для научных форумов, лекций и междисциплинарного диалога.", "de": "Man schuf damit einen Raum für wissenschaftliche Foren, Vorlesungen und interdisziplinären Dialog.", "note": "schaffen → schuf (сильный глагол). einen Raum schaffen = создать пространство."}, {"lesson": "Урок 2", "sec": "H", "secRu": "Инновации и будущее", "n": 5, "ru": "Каждое десятилетие порождало новые открытия, проекты и поколения талантливых специалистов, вносивших вклад в развитие России.", "de": "Jedes Jahrzehnt brachte neue Entdeckungen, Projekte und Generationen talentierter Spezialisten hervor, die einen Beitrag zur Entwicklung Russlands leisteten.", "note": "hervorbringen → brachte … hervor. einen Beitrag leisten zu + Dat."}, {"lesson": "Урок 2", "sec": "H", "secRu": "Инновации и будущее", "n": 6, "ru": "На улице весеннее солнце светило на фасад главного здания.", "de": "Draußen schien die Frühlingssonne auf die Fassade des Hauptgebäudes — desselben Gebäudes, das man vor mehr als fünfzig Jahren auf dem Prospekt Wernadskogo errichtet hatte.", "note": "№ 6 и № 7 в тексте — ОДНО предложение. Сначала часть до тире."}, {"lesson": "Урок 2", "sec": "H", "secRu": "Инновации и будущее", "n": 7, "ru": "Это было то самое здание, которое возвели более пятидесяти лет назад на проспекте Вернадского.", "de": "… — desselben Gebäudes, das man vor mehr als fünfzig Jahren auf dem Prospekt Wernadskogo errichtet hatte.", "note": "Та же фраза, вторая часть после тире: errichten → hatte errichtet (Plusquamperfekt)."}, {"lesson": "Урок 3", "sec": "A", "secRu": "Олимпиада и экскурсия", "n": 1, "ru": "Каждый год в РТУ МИРЭА проводится Международная олимпиада по иностранным языкам.", "de": "Jedes Jahr wird an der RTU MIREA die Internationale Olympiade für Fremdsprachen veranstaltet.", "note": "Passiv: wird … veranstaltet. Olympiade für + Akk."}, {"lesson": "Урок 3", "sec": "A", "secRu": "Олимпиада и экскурсия", "n": 2, "ru": "С 2020 года приглашаются студенты из технических университетов, которые изучают английский, немецкий или французский.", "de": "Seit 2020 werden Studenten aus technischen Universitäten eingeladen, die Englisch, Deutsch oder Französisch lernen.", "note": "seit + Präsens (не Perfekt!). Passiv: werden … eingeladen."}, {"lesson": "Урок 3", "sec": "A", "secRu": "Олимпиада и экскурсия", "n": 3, "ru": "Сначала проводится конкурс, а затем для участников организуются экскурсии по лабораториям университета.", "de": "Zuerst wird ein Wettbewerb durchgeführt, und danach werden für die Teilnehmer Exkursionen durch die Labore der Universität organisiert.", "note": "Zuerst …, und danach … . Два пассива подряд: wird … durchgeführt / werden … organisiert."}, {"lesson": "Урок 3", "sec": "A", "secRu": "Олимпиада и экскурсия", "n": 4, "ru": "В этом году Илья, Дмитрий и Катарина вели группу из десяти студентов по лабораториям.", "de": "In diesem Jahr führten Ilja, Dmitrij und Katharina eine Gruppe von zehn Studenten durch die Labore.", "note": "führen durch + Akk — «вести по». eine Gruppe von zehn Studenten."}, {"lesson": "Урок 3", "sec": "A", "secRu": "Олимпиада и экскурсия", "n": 5, "ru": "Экскурсия проводилась на немецком языке.", "de": "Die Exkursion wurde auf Deutsch gehalten.", "note": "eine Exkursion halten (не machen!) → wurde gehalten."}, {"lesson": "Урок 3", "sec": "A", "secRu": "Олимпиада и экскурсия", "n": 6, "ru": "Сегодня вам покажут, над чем ведутся исследования в нашем университете.", "de": "Heute wird Ihnen gezeigt, woran an unserer Universität geforscht wird.", "note": "forschen an + Dat. → woran. Вежливая форма: Ihnen."}, {"lesson": "Урок 3", "sec": "A", "secRu": "Олимпиада и экскурсия", "n": 7, "ru": "Мы посетим семь лабораторий и исследовательских центров.", "de": "Wir besuchen sieben Labore und Forschungszentren.", "note": "Plural Labore / Forschungszentren — без артикля после числа."}, {"lesson": "Урок 3", "sec": "B", "secRu": "Лаборатория захвата движения", "n": 1, "ru": "Здесь мы находимся в лаборатории захвата движения и цифровой анимации.", "de": "Hier befinden wir uns im Labor für Bewegungserfassung und digitale Animation.", "note": "sich befinden in + Dat. → im Labor. Bewegungserfassung = захват движения."}, {"lesson": "Урок 3", "sec": "B", "secRu": "Лаборатория захвата движения", "n": 2, "ru": "Оно было открыто в 2020 году и было первой полноценной студией захвата движения в России.", "de": "Es wurde 2020 eröffnet und war das erste vollwertige Motion-Capture-Studio in Russland.", "note": "Passiv Präteritum: wurde eröffnet. vollwertig = полноценный."}, {"lesson": "Урок 3", "sec": "B", "secRu": "Лаборатория захвата движения", "n": 3, "ru": "Движения и мимика актёров записываются с высокой точностью.", "de": "Die Bewegungen und die Mimik von Schauspielern werden mit hoher Präzision aufgezeichnet und dann in digitalen Modellen von Figuren und Objekten wiedergegeben.", "note": "Нем. продолжает: …und dann … wiedergegeben. На экзамене достаточно части до aufgezeichnet."}, {"lesson": "Урок 3", "sec": "B", "secRu": "Лаборатория захвата движения", "n": 4, "ru": "С 2024 года также используется автономная система Perception Neuron Studio.", "de": "Seit 2024 wird auch ein autonomes System Perception Neuron Studio eingesetzt.", "note": "einsetzen = применять. Passiv: wird … eingesetzt."}, {"lesson": "Урок 3", "sec": "B", "secRu": "Лаборатория захвата движения", "n": 5, "ru": "Технология адаптируется для различных областей: для киноиндустрии, спорта, медицины и игровой индустрии.", "de": "Die Technologie wird für verschiedene Bereiche adaptiert: für die Filmindustrie, den Sport, die Medizin und die Spieleindustrie.", "note": "Dativ после für: den Sport (m), die Medizin (f), die Spieleindustrie (f)."}, {"lesson": "Урок 3", "sec": "B", "secRu": "Лаборатория захвата движения", "n": 6, "ru": "Движения бойцов фиксируются и используются в компьютерных играх или тренировочных симуляторах.", "de": "Die Bewegungen von Kampfsportlern werden erfasst und in Computerspielen oder Trainingssimulatoren eingesetzt.", "note": "«боец» (единоборства) → der Kampfsportler. erfassen = фиксировать."}, {"lesson": "Урок 3", "sec": "C", "secRu": "Лаборатория иммерсивных технологий", "n": 1, "ru": "В этой лаборатории исследуются возможности расширенной реальности.", "de": "In diesem Labor werden die Möglichkeiten der erweiterten Realität erforscht — das heißt virtuelle, erweiterte und gemischte Realität.", "note": "erweiterte Realität = AR, расширенная реальность."}, {"lesson": "Урок 3", "sec": "C", "secRu": "Лаборатория иммерсивных технологий", "n": 2, "ru": "Здесь разрабатываются VR-среды и AR-приложения.", "de": "Hier werden VR-Umgebungen und AR-Anwendungen entwickelt.", "note": "die Umgebung = среда; die Anwendung = приложение."}, {"lesson": "Урок 3", "sec": "C", "secRu": "Лаборатория иммерсивных технологий", "n": 3, "ru": "Кроме того, операторы обучаются в симулированных условиях.", "de": "Außerdem werden Operatoren in simulierten Bedingungen trainiert — sowohl individuell als auch in Gruppen.", "note": "trainieren = обучать(ся); sowohl … als auch = как …, так и …."}, {"lesson": "Урок 3", "sec": "C", "secRu": "Лаборатория иммерсивных технологий", "n": 4, "ru": "При этом также тестируется тактильная обратная связь.", "de": "Dabei wird auch taktiles Feedback getestet.", "note": "dabei = при этом. das Feedback — ср. род."}, {"lesson": "Урок 3", "sec": "C", "secRu": "Лаборатория иммерсивных технологий", "n": 5, "ru": "Для этого используются специальные костюмы TACTOT.", "de": "Dafür werden spezielle TACTOT-Anzüge benutzt.", "note": "dafür = для этого. der Anzug → die Anzüge."}, {"lesson": "Урок 3", "sec": "C", "secRu": "Лаборатория иммерсивных технологий", "n": 6, "ru": "Лаборатория оснащена современными VR-очками.", "de": "Das Labor ist mit modernen VR-Brillen ausgestattet: Oculus Quest, HTC Vive Pro Eye, HTC Vive Cosmos.", "note": "ausgestattet sein mit + Dat. Перечисление моделей можно опустить."}, {"lesson": "Урок 3", "sec": "C", "secRu": "Лаборатория иммерсивных технологий", "n": 7, "ru": "К сожалению, не во время экскурсии, но в день открытых дверей это будет возможно.", "de": "Leider nicht während der Exkursion. Aber beim Tag der offenen Tür wird das ermöglicht.", "note": "beim Tag der offenen Tür = в день открытых дверей."}, {"lesson": "Урок 3", "sec": "D", "secRu": "Центр «Индустрия 4.0»", "n": 1, "ru": "Этот центр объединяет четыре лаборатории, в которых исследуются технологии фабрик будущего.", "de": "Dieses Zentrum vereint vier Labore, in denen die Technologien der Fabriken der Zukunft erforscht werden.", "note": "vereinen = объединять. Relativsatz: in denen … erforscht werden."}, {"lesson": "Урок 3", "sec": "D", "secRu": "Центр «Индустрия 4.0»", "n": 2, "ru": "В первой лаборатории проектируются и программируются операции на роботизированных ячейках.", "de": "Im ersten Labor — dem Labor für digitale robotergestützte Produktionstechnologien — werden Operationen an Roboterzellen projektiert und programmiert.", "note": "Длинная вставка в тире — необязательна. projektieren — отделяемая приставка."}, {"lesson": "Урок 3", "sec": "D", "secRu": "Центр «Индустрия 4.0»", "n": 3, "ru": "Лаборатория оснащена восемью промышленными роботами, двумя роботизированными складами и четырьмя станками с ЧПУ.", "de": "Das Labor ist mit acht Industrierobotern, zwei robotergestützten Lagern und vier CNC-Maschinen ausgestattet.", "note": "ЧПУ → CNC-Maschine. Dativ Plural: Robotern, Lagern, Maschinen."}, {"lesson": "Урок 3", "sec": "D", "secRu": "Центр «Индустрия 4.0»", "n": 4, "ru": "В четвёртой лаборатории робототехнические комплексы математически моделируются и создаются виртуальные двойники производственных установок.", "de": "Und im vierten Labor werden Roboterkomplexe mathematisch modelliert und virtuelle Zwillinge von Produktionsanlagen erstellt.", "note": "der virtuelle Zwilling = цифровой двойник. Второй глагол — с приставкой: erstellt."}, {"lesson": "Урок 3", "sec": "D", "secRu": "Центр «Индустрия 4.0»", "n": 5, "ru": "Здесь вся фабрика может быть смоделирована на компьютере, прежде чем она будет построена в реальности.", "de": "Hier kann die gesamte Fabrik am Computer simuliert werden, bevor sie in der Realität gebaut wird.", "note": "kann … simuliert werden = может быть смоделирована. bevor → глагол в конце."}, {"lesson": "Урок 3", "sec": "D", "secRu": "Центр «Индустрия 4.0»", "n": 6, "ru": "Одновременно здесь могут обучаться от 16 до 20 студентов.", "de": "Gleichzeitig können hier 16 bis 20 Studenten ausgebildet werden.", "note": "16 bis 20 = от 16 до 20. ausgebildet werden."}, {"lesson": "Урок 3", "sec": "E", "secRu": "Интеллектуальные робототехнические системы", "n": 1, "ru": "В этой междисциплинарной лаборатории разрабатываются сложные алгоритмы управления для роботов — для наземных, воздушных и космических роботов.", "de": "In diesem interdisziplinären Labor werden komplexe Steuerungsalgorithmen für Roboter entwickelt — für Boden-, Luft- und Weltraumroboter.", "note": "Boden-, Luft- und Weltraumroboter — сокращение перед дефисом: «наземных, воздушных и космических»."}, {"lesson": "Урок 3", "sec": "E", "secRu": "Интеллектуальные робототехнические системы", "n": 2, "ru": "Кроме того, создаётся программное обеспечение для координированной работы групп роботов.", "de": "Außerdem wird Software für die koordinierte Arbeit von Robotergruppen erstellt.", "note": "die Software — без артикля в этом значении."}, {"lesson": "Урок 3", "sec": "E", "secRu": "Интеллектуальные робототехнические системы", "n": 3, "ru": "Это называется мультиагентные системы.", "de": "Das nennt man Multiagentensysteme.", "note": "Das nennt man … = это называется … (man + Akk)."}, {"lesson": "Урок 3", "sec": "E", "secRu": "Интеллектуальные робототехнические системы", "n": 4, "ru": "Также здесь занимаются цифровым прототипированием — для этого используются станки с ЧПУ и 3D-принтеры.", "de": "Auch digitales Prototyping wird hier betrieben — dafür werden CNC-Maschinen und 3D-Drucker eingesetzt.", "note": "betreiben → betrieben = заниматься. der 3D-Drucker — 3D-принтер."}, {"lesson": "Урок 3", "sec": "F", "secRu": "Микроэлектроника", "n": 1, "ru": "Здесь разрабатываются и оптимизируются технологические процессы изготовления микроэлектронных компонентов на печатных платах.", "de": "Hier werden technologische Prozesse für die Herstellung mikroelektronischer Bauteile auf Leiterplatten entwickelt und optimiert.", "note": "die Leiterplatte = печатная плата. der Bauteil = компонент."}, {"lesson": "Урок 3", "sec": "F", "secRu": "Микроэлектроника", "n": 2, "ru": "Важная тема исследований — надёжность паяных соединений для приборов, которые должны работать в экстремальных условиях.", "de": "Ein wichtiges Forschungsthema ist die Zuverlässigkeit von Lötverbindungen für Geräte, die unter extremen Bedingungen arbeiten müssen — zum Beispiel im hohen Norden oder unter Einwirkung schädlicher Faktoren.", "note": "Нем. добавляет пример после тире — можно не произносить. die Lötverbindung = паяное соединение."}, {"lesson": "Урок 3", "sec": "F", "secRu": "Микроэлектроника", "n": 3, "ru": "Центр оснащён роботизированным оборудованием, которое управляется распределённой системой управления DCS APROL.", "de": "Das Zentrum ist mit robotergestützter Ausrüstung ausgestattet, die von einem verteilten Steuerungssystem DCS APROL gesteuert wird.", "note": "verteiltes Steuerungssystem = распределённая система управления."}, {"lesson": "Урок 3", "sec": "F", "secRu": "Микроэлектроника", "n": 4, "ru": "Есть линия поверхностного монтажа и рабочие места для ручного монтажа и ремонта.", "de": "Es gibt eine Linie für Oberflächenmontage und Arbeitsplätze für manuelle Montage und Reparatur.", "note": "Es gibt + Akk. die Oberflächenmontage = поверхностный монтаж."}, {"lesson": "Урок 3", "sec": "G", "secRu": "Космоцентр", "n": 1, "ru": "Это одно из моих любимых мест в университете!", "de": "Das ist einer meiner Lieblingsorte an der Universität!", "note": "einer meiner Lieblingsorte — Genitiv после «одно из моих»."}, {"lesson": "Урок 3", "sec": "G", "secRu": "Космоцентр", "n": 2, "ru": "Здесь исследуется дистанционное зондирование Земли из космоса.", "de": "Hier wird die Fernerkundung der Erde aus dem Weltraum erforscht.", "note": "die Fernerkundung = дистанционное зондирование."}, {"lesson": "Урок 3", "sec": "G", "secRu": "Космоцентр", "n": 3, "ru": "Состояние космических аппаратов в околоземном пространстве контролируется.", "de": "Der Zustand von Raumfahrzeugen im erdnahen Raum wird überwacht.", "note": "der erdnahe Raum = околоземное пространство. überwachen = контролировать."}, {"lesson": "Урок 3", "sec": "G", "secRu": "Космоцентр", "n": 4, "ru": "Кроме того, ведутся исследования в области радиолокации, радионавигации и космических систем связи.", "de": "Außerdem wird an Radarlokation, Radionavigation und kosmischen Kommunikationssystemen geforscht.", "note": "forschen an + Dat. — три дополнения в дативе."}, {"lesson": "Урок 3", "sec": "G", "secRu": "Космоцентр", "n": 5, "ru": "Космоцентр интегрирован с Роскосмосом и системами контроля спутниковой группировки.", "de": "Der Kosmozentr ist mit Roskosmos und den Systemen zur Kontrolle der Satellitengruppe integriert.", "note": "integriert sein mit + Dat. die Satellitengruppe = спутниковая группировка."}, {"lesson": "Урок 3", "sec": "G", "secRu": "Космоцентр", "n": 6, "ru": "Лаборатории оснащены высокочастотными генераторами, анализаторами спектра и программно-аппаратными комплексами для прототипирования средств радиосвязи.", "de": "Die Labore sind mit Hochfrequenzgeneratoren, Spektrumanalysatoren und Software-Hardware-Komplexen für das Prototyping von Funkkommunikationsmitteln ausgestattet.", "note": "ausgestattet sein mit + Dat. — здесь три длинных дополнения; главное — не потерять приставку ausgestattet."}, {"lesson": "Урок 3", "sec": "H", "secRu": "Кибербезопасность", "n": 1, "ru": "Эта мегалаборатория была основана совместно с компанией BI.ZONE.", "de": "Diese Megalaborgruppe wurde gemeinsam mit dem Unternehmen BI.ZONE gegründet.", "note": "Passiv Präteritum: wurde … gegründet."}, {"lesson": "Урок 3", "sec": "H", "secRu": "Кибербезопасность", "n": 2, "ru": "Здесь охватывается весь цикл кибербезопасности.", "de": "Hier wird der gesamte Zyklus der Cybersicherheit abgedeckt.", "note": "abdecken = охватывать. Passiv: wird … abgedeckt."}, {"lesson": "Урок 3", "sec": "H", "secRu": "Кибербезопасность", "n": 3, "ru": "В киберполигоне моделируются кибератаки, проводятся тесты на проникновение и отрабатываются процедуры реагирования на инциденты безопасности.", "de": "Im Cyberpolygon werden Cyberangriffe modelliert, Penetrationstests durchgeführt und Verfahren zur Reaktion auf Sicherheitsvorfälle trainiert.", "note": "Три пассивных причастия подряд: modelliert, durchgeführt, trainiert."}, {"lesson": "Урок 3", "sec": "H", "secRu": "Кибербезопасность", "n": 4, "ru": "В лаборатории тестирования кибербезопасности ИИ ищутся уязвимости в системах искусственного интеллекта.", "de": "In der Laborgruppe für KI-Cybersicherheitstests werden Schwachstellen in Systemen der künstlichen Intelligenz gesucht.", "note": "die Schwachstelle = уязвимость. KI = künstliche Intelligenz."}, {"lesson": "Урок 3", "sec": "H", "secRu": "Кибербезопасность", "n": 5, "ru": "Для этого применяются мощные компьютеры с графическими ускорителями.", "de": "Dafür werden leistungsstarke Computer mit Grafikbeschleunigern eingesetzt.", "note": "der Grafikbeschleuniger = графический ускоритель."}, {"lesson": "Урок 3", "sec": "H", "secRu": "Кибербезопасность", "n": 6, "ru": "В лаборатории анализа и разработки защищённого ПО работают по принципу DevSecOps.", "de": "In der Laborgruppe für Analyse und Entwicklung geschützter Software wird nach dem DevSecOps-Prinzip gearbeitet.", "note": "nach dem …-Prinzip arbeiten = работать по принципу."}, {"lesson": "Урок 3", "sec": "H", "secRu": "Кибербезопасность", "n": 7, "ru": "Здесь разрабатывается устойчивое к атакам программное обеспечение.", "de": "Hier wird angriffsresistente Software entwickelt.", "note": "angriffsresistent = устойчивый к атакам (одно слово)."}, {"lesson": "Урок 3", "sec": "I", "secRu": "Завершение", "n": 1, "ru": "Большое спасибо за интересную экскурсию!", "de": "Vielen Dank für die interessante Führung!", "note": "die Führung = экскурсия (её ведёт гид/студент)."}, {"lesson": "Урок 3", "sec": "I", "secRu": "Завершение", "n": 2, "ru": "Я впечатлён. В РТУ МИРЭА действительно ведутся исследования на высочайшем уровне.", "de": "Ich bin beeindruckt. An der RTU MIREA wird wirklich auf höchstem Niveau geforscht.", "note": "auf höchstem Niveau = на высочайшем уровне (Dativ)."}, {"lesson": "Урок 3", "sec": "I", "secRu": "Завершение", "n": 3, "ru": "Да, и всё было так хорошо объяснено на немецком языке!", "de": "Ja, und alles wurde so gut auf Deutsch erklärt!", "note": "Passiv Präteritum: wurde … erklärt."}, {"lesson": "Урок 3", "sec": "I", "secRu": "Завершение", "n": 4, "ru": "Я почти всё поняла.", "de": "Ich habe fast alles verstanden.", "note": "Perfekt: habe … verstanden."}, {"lesson": "Урок 3", "sec": "I", "secRu": "Завершение", "n": 5, "ru": "Если у вас есть вопросы, вы можете обратиться к нам в любое время.", "de": "Wenn Sie Fragen haben, können Sie uns jederzeit ansprechen.", "note": "Вежливая форма Sie. jemanden ansprechen = обратиться к кому-л."}, {"lesson": "Урок 3", "sec": "I", "secRu": "Завершение", "n": 6, "ru": "Экскурсия прошла хорошо.", "de": "Die Exkursion war gut gelaufen.", "note": "Plusquamperfekt: war … gelaufen (прошла = до момента речи)."}, {"lesson": "Урок 3", "sec": "I", "secRu": "Завершение", "n": 7, "ru": "И скоро будут объявлены результаты олимпиады.", "de": "Und bald würden die Ergebnisse der Olympiade bekanntgegeben werden.", "note": "bekanntgeben — отделяемая приставка bekannt-."}];
+const S = { deck: [], i: 0, revealed: false, mode: 'all', filter: 'all', known: new Set(), agn: new Set() };
+
+const el = id => document.getElementById(id);
+const KEY = 'de-mirea-km-v1';
+
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify({k:[...S.known],a:[...S.agn]})); }catch(e){} }
+function load(){ try{ const r = JSON.parse(localStorage.getItem(KEY)||'{}');
+  (r.k||[]).forEach(x=>S.known.add(x)); (r.a||[]).forEach(x=>S.agn.add(x)); }catch(e){} }
+
+function shuffle(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]];} return a; }
+
+function currentPool(){
+  let pool = DATA.map((d,idx)=>({...d, id:idx}));
+  if(S.filter==='L2') pool = pool.filter(d=>d.lesson==='Урок 2');
+  return pool;
+}
+
+function buildDeck(mode){
+  S.mode = mode; S.known = new Set(); S.agn = new Set(); load();
+  const pool = currentPool();
+  if(mode==='ticket'){
+    let cand = pool.filter(d=>!S.known.has(d.id));
+    if(cand.length < 10) cand = pool;
+    S.deck = shuffle(cand).slice(0,10);
+  } else if(mode==='hard'){
+    const hard = pool.filter(d=>S.agn.has(d.id));
+    S.deck = hard.length ? shuffle(hard) : shuffle(pool);
+  } else {
+    S.deck = pool;
+  }
+  S.i = 0; S.revealed = false; render();
+}
+
+function speak(text){
+  if(!('speechSynthesis' in window)) return;
+  const u = new SpeechSynthesisUtterance(text.replace(/[„“«»]/g,''));
+  u.lang = 'de-DE'; u.rate = 0.92;
+  const vs = speechSynthesis.getVoices().filter(v=>/^de/i.test(v.lang));
+  if(vs.length) u.voice = vs[0];
+  speechSynthesis.cancel(); speechSynthesis.speak(u);
+}
+
+function progress(){
+  if(S.mode==='all'){ return (S.i)/(S.deck.length||1); }
+  return (S.known.size + S.agn.size)/(S.deck.length||1);
+}
+
+function render(){
+  const total = S.deck.length;
+  el('cKnown').textContent = S.known.size;
+  el('cAgn').textContent = S.agn.size;
+  el('cTotal').textContent = total;
+  el('bar').style.width = Math.min(100, Math.round(progress()*100)) + '%';
+
+  if(S.i >= total){ finish(); return; }
+  el('cardWrap').innerHTML = cardHTML();
+  bindCard();
+}
+
+function finish(){
+  el('cardWrap').innerHTML = `
+  <div class="done">
+    <h2>Круг закончен</h2>
+    <p>${S.mode==='ticket' ? 'Билет пройден' : 'Прошли все предложения'} — сверились с ${total()} карточками.</p>
+    <div class="stat">
+      <div><b>${S.known.size}</b>знаю</div>
+      <div><b>${S.agn.size}</b>надо повторить</div>
+      <div><b>${S.deck.length}</b>в наборе</div>
+    </div>
+    <button class="btn prim" onclick="location.reload()">Начать заново</button>
+  </div>`;
+  speak('');
+  el('bar').style.width='100%';
+}
+function total(){ return S.deck.length; }
+
+function cardHTML(){
+  const d = S.deck[S.i];
+  const rv = S.revealed;
+  const flags = (S.known.has(d.id)?' ✓':'') + (S.agn.has(d.id)?' ↻':'');
+  return `<div class="card">
+    <div class="cap"><span class="dot"></span>
+      <span>${d.lesson} · ${d.sec}</span>
+      <span class="fl">${d.secRu} &nbsp;·&nbsp; №${d.n}${flags}</span>
+    </div>
+    <div class="ru-side">
+      <div class="lbl">Русский — переведите вслух</div>
+      <div class="ru-txt">${esc(d.ru)}</div>
+    </div>
+    <div class="de-side">
+      <div class="lbl">Немецкий</div>
+      <div class="de-txt ${rv?'':'q'}">${rv ? esc(d.de) : 'нажмите «Показать» или пробел'}</div>
+      ${(rv && d.note) ? `<div class="note">${esc(d.note)}</div>` : ''}
+    </div>
+    <div class="acts">
+      <button class="btn prim" id="bShow">${rv?'Скрыть':'Показать перевод'}</button>
+      <button class="btn" id="bSay" ${rv?'':'disabled'}>🔊 Прослушать</button>
+      <button class="btn bad" id="bBad" ${rv?'':'disabled'}>↻ Повторить</button>
+      <button class="btn ok" id="bOk" ${rv?'':'disabled'}>✓ Знаю</button>
+    </div>
+  </div>
+  <div class="nav">
+    <button id="bPrev">← Назад</button>
+    <span class="idx">${S.i+1} / ${S.deck.length}</span>
+    <button id="bNext">Дальше →</button>
+    <span class="spacer"></span>
+    <button id="bShuffle">Перемешать</button>
+  </div>`;
+}
+
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function bindCard(){
+  const g = id => el(id);
+  g('bShow') && (g('bShow').onclick = ()=>{ S.revealed=!S.revealed; render(); });
+  g('bSay')  && (g('bSay').onclick  = ()=> speak(S.deck[S.i].de));
+  g('bOk')   && (g('bOk').onclick   = ()=>{ S.known.add(S.deck[S.i].id); S.agn.delete(S.deck[S.i].id); save(); next(); });
+  g('bBad')  && (g('bBad').onclick  = ()=>{ S.agn.add(S.deck[S.i].id); S.known.delete(S.deck[S.i].id); save(); next(); });
+  g('bNext') && (g('bNext').onclick = next);
+  g('bPrev') && (g('bPrev').onclick = ()=>{ if(S.i>0){ S.i--; S.revealed=false; render(); } });
+  g('bShuffle') && (g('bShuffle').onclick = ()=>{ S.deck = shuffle(S.deck); S.i=0; S.revealed=false; render(); });
+}
+
+function next(){ if(S.i < S.deck.length-1){ S.i++; S.revealed=false; render(); } else { S.i = S.deck.length; render(); } }
+
+document.addEventListener('keydown', e=>{
+  if(e.target.tagName === 'INPUT') return;
+  if(e.code==='Space'){ e.preventDefault(); S.revealed=!S.revealed; render(); }
+  else if(e.key==='ArrowRight'){ e.preventDefault(); next(); }
+  else if(e.key==='ArrowLeft'){ e.preventDefault(); if(S.i>0){S.i--;S.revealed=false;render();} }
+  else if(e.key==='1'){ const b=el('bBad'); if(b&&!b.disabled) b.click(); }
+  else if(e.key==='2'){ const b=el('bOk'); if(b&&!b.disabled) b.click(); }
+  else if(e.key==='s'||e.key==='ы'){ if(S.revealed) speak(S.deck[S.i].de); }
+});
+
+document.querySelectorAll('.modes button[data-mode]').forEach(b=>{
+  b.onclick = ()=>{ document.querySelectorAll('.modes button[data-mode]').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on'); buildDeck(b.dataset.mode); };
+});
+document.querySelectorAll('.modes button[data-filter]').forEach(b=>{
+  b.onclick = ()=>{ document.querySelectorAll('.modes button[data-filter]').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on'); S.filter = b.dataset.filter; buildDeck(S.mode); };
+});
+
+load(); buildDeck('all');
+if('speechSynthesis' in window){ speechSynthesis.getVoices(); speechSynthesis.onvoiceschanged = ()=>{}; }
+</script>
+</body></html>
